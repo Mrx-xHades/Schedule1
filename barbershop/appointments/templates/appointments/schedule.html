@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h2 class="mb-4">Agendar Horário</h2>
+<form method="post" id="appointment-form">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-success">Agendar</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  // Exemplo de lógica para carregar horários disponíveis (você precisa adaptar no backend)
+  $(document).ready(function () {
+    $("#id_date, #id_barber").on("change", function () {
+      let date = $("#id_date").val();
+      let barber_id = $("#id_barber").val();
+
+      console.log("Tentando buscar horários para:", date, barber_id); // <-- ADICIONE ISSO
+
+      if (date && barber_id) {
+        $.ajax({
+          url: "/agendamentos/horarios-disponiveis/",  // você criaria essa URL
+          data: {
+            'date': date,
+            'barber_id': barber_id,
+          },
+          success: function (data) {
+            let options = "";
+            for (let i = 0; i < data.times.length; i++) {
+              options += `<option value="${data.times[i]}">${data.times[i]}</option>`;
+            }
+            $("#id_time").html(options);
+          }
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}
+
