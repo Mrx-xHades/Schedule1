@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Appointment
 from .forms import AppointmentForm
@@ -13,7 +13,6 @@ def list_appointments(request):
     return render(request, 'appointments/list.html', {'appointments': appointments})
 
 
-
 @login_required
 def schedule_appointment(request):
     if request.method == 'POST':
@@ -26,6 +25,22 @@ def schedule_appointment(request):
     else:
         form = AppointmentForm()
     return render(request, 'appointments/schedule.html', {'form': form})
+
+
+# ✅ View de edição integrada
+@login_required
+def editar_agendamento(request, pk):
+    agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
+
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST, instance=agendamento)
+        if form.is_valid():
+            form.save()
+            return redirect('appointments:list')
+    else:
+        form = AppointmentForm(instance=agendamento)
+
+    return render(request, 'appointments/editar_agendamento.html', {'form': form})
 
 
 # Função para gerar horários disponíveis
@@ -67,3 +82,15 @@ def horarios_disponiveis(request):
     formatted_times = [t.strftime('%H:%M') for t in times]
 
     return JsonResponse({'times': formatted_times})
+
+
+# ✅ View para cancelar agendamento
+@login_required
+def cancelar_agendamento(request, pk):
+    agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
+    
+    if request.method == 'POST':
+        agendamento.delete()
+        return redirect('appointments:list')
+    
+    return render(request, 'appointments/cancelar_confirmacao.html', {'agendamento': agendamento})

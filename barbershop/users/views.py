@@ -2,7 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm  # Adicione esta importação
-from django.contrib.auth import logout
+from barbershop.users.models import User
+
 
 def register(request):
     if request.method == 'POST':
@@ -13,9 +14,5 @@ def register(request):
             return redirect('users:login')
     else:
         form = UserRegisterForm()
-    print("Tentando renderizar users/register.html")
     return render(request, 'register.html', {'form': form})
 
-def logout_view(request):
-    logout(request)
-    return redirect('users:login')

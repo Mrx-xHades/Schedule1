@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4 text-danger">Cancelar Agendamento</h2>
+
+<p>Tem certeza que deseja cancelar este agendamento?</p>
+
+<ul class="list-group mb-3">
+  <li class="list-group-item"><strong>Serviço:</strong> {{ agendamento.service.name }} - R$ {{ agendamento.service.price }}</li>
+  <li class="list-group-item"><strong>Data:</strong> {{ agendamento.date }}</li>
+  <li class="list-group-item"><strong>Hora:</strong> {{ agendamento.time }}</li>
+  <li class="list-group-item"><strong>Barbeiro:</strong> {{ agendamento.barber.username }}</li>
+</ul>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
+  <a href="{% url 'appointments:list' %}" class="btn btn-secondary">Voltar</a>
+</form>
+{% endblock %}

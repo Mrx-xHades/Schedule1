@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.95);">
+      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Usuários Cadastrados</h2>
+
+      <table class="table table-hover table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Tipo</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in usuarios %}
+          <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              {% if user.is_barber %}
+                Barbeiro
+              {% elif user.is_client %}
+                Cliente
+              {% else %}
+                ---
+              {% endif %}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'dashboard:redefinir_senha' user.id %}" class="btn btn-sm btn-warning">
+                    <i class="fas fa-key"></i> Redefinir Senha
+                </a>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">Nenhum usuário encontrado.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

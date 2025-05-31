@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.95);">
+      <h2 class="text-center mb-4" style="font-family: 'Bebas Neue', sans-serif;">
+        Novo Serviço
+      </h2>
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Cadastrar Serviço
+          </button>
+          <a href="{% url 'dashboard:usuarios_list' %}" class="btn btn-secondary ml-2">
+            Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -5,16 +5,18 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
     <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.9);">
-      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Agendar Horário</h2>
+      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Editar Agendamento</h2>
 
       <form method="post" id="appointment-form">
         {% csrf_token %}
         {{ form|crispy }}
-
         <div class="text-center mt-3">
-          <button type="submit" class="btn btn-success">
-            <i class="fas fa-calendar-check"></i> Agendar
+          <button type="submit" class="btn btn-primary mr-2">
+            <i class="fas fa-save"></i> Salvar Alterações
           </button>
+          <a href="{% url 'appointments:schedule' %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancelar
+          </a>
         </div>
       </form>
     </div>
@@ -30,8 +32,6 @@
     $("#id_date, #id_barber").on("change", function () {
       let date = $("#id_date").val();
       let barber_id = $("#id_barber").val();
-
-      console.log("Tentando buscar horários para:", date, barber_id);
 
       if (date && barber_id) {
         $.ajax({
