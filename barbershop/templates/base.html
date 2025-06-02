@@ -62,23 +62,28 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'appointments:list' %}">
-                            <i class="fas fa-calendar-check"></i> Meus Agendamentos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'appointments:schedule' %}">
-                            <i class="fas fa-calendar-plus"></i> Agendar
-                        </a>
-                    </li>
-
-                    {% if user.is_barber or user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link text-warning" href="{% url 'dashboard:criar_servico' %}">
-                            <i class="fas fa-scissors"></i> Criar Serviço
-                        </a>
-                    </li>
+                    {% if user.is_barber or user.is_staff %}  
+                        <li class="nav-item">
+                            <a class="nav-link text-warning" href="{% url 'dashboard:criar_servico' %}">
+                                <i class="fas fa-scissors"></i> Criar Serviço
+                            </a>
+                        </li>
+                    {% else %}    
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'appointments:list' %}">
+                                <i class="fas fa-calendar-check"></i> Meus Agendamentos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'appointments:schedule' %}">
+                                <i class="fas fa-calendar-plus"></i> Agendar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'appointments:historico' %}">
+                                <i class="fas fa-history"></i> Histórico
+                            </a>
+                         </li>
                     {% endif %}
                 {% endif %}
             </ul>

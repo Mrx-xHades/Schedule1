@@ -90,14 +90,25 @@
 <button class="btn btn-dark theme-toggle" onclick="toggleTheme()">
   <i class="fas fa-moon"></i>
 </button>
+{% if user.is_authenticated and user.is_barber or user.is_staff%}
 
-<header class="hero">
+  <header class="hero">
+    <div data-aos="fade-down">
+      <h1>BlackBeard Barbearia</h1>
+      <p class="lead">Tradição, estilo e atitude em cada corte</p>
+      <a href="/agendamentos/" class="btn btn-outline-light mt-4">Minha Agenda</a>
+    </div>
+  </header>
+
+{% else %}
+  <header class="hero">
   <div data-aos="fade-down">
     <h1>BlackBeard Barbearia</h1>
     <p class="lead">Tradição, estilo e atitude em cada corte</p>
     <a href="/agendamentos/" class="btn btn-outline-light mt-4">Agende Seu Horário</a>
   </div>
-</header>
+  </header>
+{% endif %}
 
 <section class="retro-section text-center" data-aos="fade-up">
   <div class="container">

@@ -7,7 +7,7 @@ urlpatterns = [
 
     # Apps
     path('usuarios/', include('barbershop.users.urls')),
-    path('agendamentos/', include('barbershop.appointments.urls')),
+    path('agendamentos/', include('barbershop.appointments.urls'), name='agendamentos'),
     path('dashboard/', include('barbershop.dashboard.urls')),
 
     # Página inicial: landing page

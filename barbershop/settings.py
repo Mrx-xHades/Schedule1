@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'appointments:list'
+LOGIN_REDIRECT_URL = 'users:home'
 LOGOUT_REDIRECT_URL = 'users:login'
 
 MIDDLEWARE = [

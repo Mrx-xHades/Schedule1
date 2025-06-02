@@ -9,5 +9,6 @@ urlpatterns = [
     path('horarios-disponiveis/', views.horarios_disponiveis, name='horarios_disponiveis'),
     path('agendamentos/editar/<int:pk>/', views.editar_agendamento, name='editar_agendamento'),
     path('agendamentos/cancelar/<int:pk>/', views.cancelar_agendamento, name='cancelar_agendamento'),  # ✅ Nova rota
+    path('historico/', views.historico_agendamentos, name='historico'),
 ]
 

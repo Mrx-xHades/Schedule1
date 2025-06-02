@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4 shadow">
+  <h2 class="text-center mb-4">Histórico de Agendamentos</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Serviço</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Barbeiro</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for appointment in appointments %}
+        <tr>
+          <td>{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
+          <td>{{ appointment.date|date:"d \d\e F \d\e Y" }}</td>
+          <td>{{ appointment.time }}</td>
+          <td>{{ appointment.barber.username }}</td>
+          <td>
+            {% if appointment.status == "cancelado" %}
+              <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
+            {% elif appointment.status == "concluido" %}
+              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Concluído</span>
+            {% elif appointment.status == "confirmado" %}
+              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
+            {% else %}
+              <span class="badge badge-secondary">{{ appointment.status }}</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">Nenhum histórico encontrado.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'appointments:list' %}" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left"></i> Voltar</a>
+</div>
+{% endblock %}

@@ -13,6 +13,7 @@
             <th>Data</th>
             <th>Hora</th>
             <th>Barbeiro</th>
+            <th>Status</th>
             <th class="text-center">Ações</th>
           </tr>
         </thead>
@@ -23,6 +24,18 @@
             <td>{{ appointment.date }}</td>
             <td>{{ appointment.time }}</td>
             <td>{{ appointment.barber.username }}</td>
+            <td>
+            {% if appointment.status == "cancelado" %}
+              <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
+            {% elif appointment.status == "concluido" %}
+              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Concluído</span>
+            {% elif appointment.status == "confirmado" %}
+              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
+            {% else %}
+              <span class="badge badge-secondary">{{ appointment.status }}</span>
+            {% endif %}
+          </td>
+          {% if appointment.status == "pendente" %}
             <td class="text-center">
               <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary">
                 <i class="fas fa-edit"></i> Reagendar
@@ -31,6 +44,24 @@
                 <i class="fas fa-times-circle"></i> Cancelar
               </a>
             </td>
+            {% else %}
+              <td class="text-center">
+                <a href="#" 
+                  class="btn btn-sm btn-secondary disabled" 
+                  aria-disabled="true" 
+                  tabindex="-1" 
+                  style="pointer-events: none;">
+                  <i class="fas fa-edit"></i> Reagendar
+                </a>
+                <a href="#" 
+                  class="btn btn-sm btn-secondary disabled ml-2" 
+                  aria-disabled="true" 
+                  tabindex="-1" 
+                  style="pointer-events: none;">
+                  <i class="fas fa-times-circle"></i> Cancelar
+                </a>
+              </td>
+            {% endif %}
           </tr>
           {% empty %}
           <tr>

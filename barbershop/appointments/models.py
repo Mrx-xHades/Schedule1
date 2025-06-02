@@ -24,3 +24,12 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.date} às {self.time} com {self.barber}"
+    
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('confirmado', 'Confirmado'),
+        ('concluido', 'Concluído'),
+        ('cancelado', 'Cancelado'),
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')

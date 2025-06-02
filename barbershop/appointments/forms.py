@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from .models import Appointment
 from django.forms import DateInput, Select
+from django.core.exceptions import ValidationError
+from datetime import date
 
 class AppointmentForm(forms.ModelForm):
     class Meta:
@@ -11,7 +13,12 @@ class AppointmentForm(forms.ModelForm):
             'date': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'time': Select(attrs={'class': 'form-control'}),
         }
-
+        
+        def clean_date(self):
+            selected_date = self.cleaned_data.get('date')
+            if selected_date and selected_date < date.today():
+                raise ValidationError("Você não pode agendar para uma data que já passou.")
+            return selected_date
 
     def init(self, args, **kwargs):
         super().init(args, **kwargs)
