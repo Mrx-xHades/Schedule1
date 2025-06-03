@@ -61,14 +61,19 @@
         <a class="navbar-brand" href="/">Barbearia</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated %} <!--Barber-->
                     {% if user.is_barber or user.is_staff %}  
                         <li class="nav-item">
                             <a class="nav-link text-warning" href="{% url 'dashboard:criar_servico' %}">
                                 <i class="fas fa-scissors"></i> Criar Serviço
                             </a>
                         </li>
-                    {% else %}    
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'appointments:list' %}">
+                                <i class="fas fa-calendar-check"></i> Minhas Agendas
+                            </a>
+                        </li>
+                    {% else %}   <!--Client-->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'appointments:list' %}">
                                 <i class="fas fa-calendar-check"></i> Meus Agendamentos

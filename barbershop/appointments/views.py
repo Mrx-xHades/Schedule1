@@ -7,7 +7,9 @@ from django.http import JsonResponse
 from barbershop.users.models import User
 from django.utils.timezone import now
 from django.db.models import Q
-
+from django.contrib import messages
+from django.db import IntegrityError
+from datetime import datetime, date, time, timedelta
 
 @login_required
 def list_appointments(request):
@@ -28,12 +30,31 @@ def schedule_appointment(request):
         if form.is_valid():
             appointment = form.save(commit=False)
             appointment.client = request.user
-            appointment.status = 'pendente'  # define status padrão
-            appointment.save()
-            return redirect('appointments:list')
+            appointment.status = 'pendente'
+
+            # 🔍 Verifica se já existe um agendamento no mesmo horário para o mesmo barbeiro (exceto cancelados)
+            conflito = Appointment.objects.filter(
+                barber=appointment.barber,
+                date=appointment.date,
+                time=appointment.time
+            ).exclude(status='cancelado').exists()
+
+            if conflito:
+                messages.error(request, "Já existe um agendamento nesse horário.")
+                return redirect('appointments:schedule')
+
+            try:
+                appointment.save()
+                messages.success(request, "Agendamento realizado com sucesso.")
+                return redirect('appointments:list')
+            except IntegrityError:
+                messages.error(request, "Erro ao salvar o agendamento. Verifique os dados e tente novamente.")
+                return redirect('appointments:schedule')
     else:
         form = AppointmentForm()
+
     return render(request, 'appointments/schedule.html', {'form': form})
+
 
 
 @login_required
@@ -52,25 +73,36 @@ def editar_agendamento(request, pk):
 
 
 # Gera horários disponíveis com intervalo de 45 minutos
-def available_times(barber, date):
+
+def available_times(barber, date_selected):
     start_time = time(9, 0)
     end_time = time(18, 0)
     interval = timedelta(minutes=45)
 
-    current_time = datetime.combine(date, start_time)
-    end_datetime = datetime.combine(date, end_time)
+    now = datetime.now()
 
-    appointments = Appointment.objects.filter(barber=barber, date=date)
+    current_time = datetime.combine(date_selected, start_time)
+    end_datetime = datetime.combine(date_selected, end_time)
+
+    # busca agendamentos válidos (não cancelados)
+    appointments = Appointment.objects.filter(barber=barber, date=date_selected).exclude(status='cancelado')
     booked_times = set(a.time for a in appointments)
 
     available = []
     while current_time <= end_datetime:
         t = current_time.time()
+
+        # 💡 Filtra horários passados se for o dia de hoje
+        if date_selected == date.today() and current_time < now:
+            current_time += interval
+            continue
+
         if t not in booked_times:
             available.append(t)
         current_time += interval
 
     return available
+
 
 
 @login_required

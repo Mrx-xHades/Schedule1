@@ -60,3 +60,10 @@ class EmailLoginForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         if not user.is_active:
             raise forms.ValidationError("Esta conta está inativa.", code='inactive')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_client = True  # Define o campo is_client como True por padrão
+        if commit:
+            user.save()
+        return user

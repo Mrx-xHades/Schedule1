@@ -5,7 +5,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False, blank=True)
     email = models.EmailField(unique=True)
 
-    is_client = models.BooleanField(default=False)
+    is_client = models.BooleanField(default=True)
     is_barber = models.BooleanField(default=False)
     must_change_password = models.BooleanField(default=False)  # 👈 Adicione isso
 
