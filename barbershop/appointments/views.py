@@ -10,6 +10,8 @@ from django.db.models import Q
 from django.contrib import messages
 from django.db import IntegrityError
 from datetime import datetime, date, time, timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 @login_required
 def list_appointments(request):
@@ -54,8 +56,10 @@ def schedule_appointment(request):
         form = AppointmentForm()
 
     return render(request, 'appointments/schedule.html', {'form': form})
-
-
+@login_required
+def list_all(request):
+    agendamentos = Appointment.objects.all().order_by('-date', '-time')
+    return render(request, 'appointments/list_all.html', {'appointments': agendamentos})
 
 @login_required
 def editar_agendamento(request, pk):
@@ -70,6 +74,20 @@ def editar_agendamento(request, pk):
         form = AppointmentForm(instance=agendamento)
 
     return render(request, 'appointments/editar_agendamento.html', {'form': form})
+
+@login_required
+def confirmar_agendamento(request, pk):
+    agendamento = get_object_or_404(Appointment, pk=pk)
+
+    if agendamento.barber != request.user:
+        messages.error(request, "Você não tem permissão para confirmar este agendamento.")
+        return redirect('appointments:list_all')
+
+    logger.info(f"Agendamento confirmado: {agendamento}")  # Vai para o log do servidor
+    agendamento.status = 'confirmado'
+    agendamento.save()
+    messages.success(request, "Agendamento confirmado com sucesso.")
+    return redirect('appointments:list_all')
 
 
 # Gera horários disponíveis com intervalo de 45 minutos

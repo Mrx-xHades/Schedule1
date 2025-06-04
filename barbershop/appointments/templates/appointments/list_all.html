@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.9);">
+      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Agendamentos Recebidos</h2>
+
+      <table class="table table-bordered table-hover text-center align-middle">
+        <thead class="thead-dark">
+          <tr>
+            <th class="align-middle">Cliente</th>
+            <th class="align-middle">Serviço</th>
+            <th class="align-middle">Data</th>
+            <th class="align-middle">Hora</th>
+            <th class="align-middle">Barbeiro</th>
+            <th class="align-middle">Status</th>
+            <th class="align-middle">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+          <tr>
+            <td class="align-middle">{{ appointment.client.first_name|default:appointment.client.email }}</td>
+            <td class="align-middle">{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
+            <td class="align-middle">{{ appointment.date|date:"j \\d\\e F \\d\\e Y" }}</td>
+            <td class="align-middle">{{ appointment.time|time:"H:i" }}</td>
+            <td class="align-middle">{{ appointment.barber.username }}</td>
+            <td class="align-middle">
+              {% if appointment.status == "cancelado" %}
+                <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
+              {% elif appointment.status == "concluido" %}
+                <span class="badge badge-success"><i class="fas fa-check-circle"></i> Concluído</span>
+              {% elif appointment.status == "confirmado" %}
+                <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
+              {% else %}
+                <span class="badge badge-secondary"><i class="fas fa-clock"></i> {{ appointment.status }}</span>
+              {% endif %}
+            </td>
+            <td class="align-middle">
+              {% if appointment.status == "pendente" %}
+              <div class="d-flex justify-content-center gap-2">
+                <a href="{% url 'appointments:confirmar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-success px-2">
+                  <i class="fas fa-check"></i> Confirmar
+                </a>
+                <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary px-2">
+                  <i class="fas fa-edit"></i> Reagendar
+                </a>
+                <a href="{% url 'appointments:cancelar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-danger px-2">
+                  <i class="fas fa-times"></i> Cancelar
+                </a>
+              </div>
+              {% else %}
+              <span class="text-muted">Sem ações disponíveis</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center">Nenhum agendamento encontrado.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
