@@ -63,7 +63,10 @@ def list_all(request):
 
 @login_required
 def editar_agendamento(request, pk):
-    agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
+    if request.user.is_staff or request.user.is_barber:
+        agendamento = get_object_or_404(Appointment, pk=pk)
+    else:
+        agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
 
     if request.method == 'POST':
         form = AppointmentForm(request.POST, instance=agendamento)
@@ -74,6 +77,18 @@ def editar_agendamento(request, pk):
         form = AppointmentForm(instance=agendamento)
 
     return render(request, 'appointments/editar_agendamento.html', {'form': form})
+
+
+@login_required
+def concluido(request, pk):
+    agendamento = get_object_or_404(Appointment, pk=pk)
+
+    logger.info(f"Agendamento concluido: {agendamento}")  # Vai para o log do servidor
+    agendamento.status = 'concluido'
+    agendamento.save()
+    messages.success(request, "Agendamento concluido.")
+    return redirect('appointments:list')
+
 
 @login_required
 def confirmar_agendamento(request, pk):
@@ -152,8 +167,11 @@ def historico_agendamentos(request):
 
 @login_required
 def cancelar_agendamento(request, pk):
-    agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
-
+    if request.user.is_staff or request.user.is_barber:
+        agendamento = get_object_or_404(Appointment, pk=pk)
+    else:
+        agendamento = get_object_or_404(Appointment, pk=pk, client=request.user)
+        
     if request.method == 'POST':
         agendamento.status = 'cancelado'
         agendamento.save()

@@ -96,7 +96,7 @@
     <div data-aos="fade-down">
       <h1>BlackBeard Barbearia</h1>
       <p class="lead">Tradição, estilo e atitude em cada corte</p>
-      <a href="/agendamentos/" class="btn btn-outline-light mt-4">Minha Agenda</a>
+      <a href="{% url 'appointments:list_all' %}" class="btn btn-outline-light mt-4">Minha Agenda</a>
     </div>
   </header>
 
@@ -105,36 +105,12 @@
   <div data-aos="fade-down">
     <h1>BlackBeard Barbearia</h1>
     <p class="lead">Tradição, estilo e atitude em cada corte</p>
+
     <a href="/agendamentos/" class="btn btn-outline-light mt-4">Agende Seu Horário</a>
   </div>
   </header>
 {% endif %}
 
-<section class="retro-section text-center" data-aos="fade-up">
-  <div class="container">
-    <h2 class="mb-5">Nossos Serviços</h2>
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="retro-card">
-          <h4>Corte Clássico</h4>
-          <p>R$ 40,00</p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="retro-card">
-          <h4>Barba Completa</h4>
-          <p>R$ 30,00</p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="retro-card">
-          <h4>Combo Corte + Barba</h4>
-          <p>R$ 60,00</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="retro-section text-center" data-aos="zoom-in">
   <div class="container">

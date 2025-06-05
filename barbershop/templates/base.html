@@ -100,7 +100,11 @@
             {% if user.is_authenticated %}
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <span class="navbar-text text-white mr-3">Bem-vindo, {{ user.first_name }}</span>
+                    {% if user.is_barber or user.is_staff %}
+                        <span class="navbar-text text-white mr-3">Bem-vindo, {{ user.username }}</span>
+                    {% else %}
+                        <span class="navbar-text text-white mr-3">Bem-vindo, {{ user.first_name }}</span>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
                     <form action="{% url 'users:logout' %}" method="post" style="display: inline;">

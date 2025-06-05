@@ -6,7 +6,7 @@
     <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.9);">
       <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Meus Agendamentos</h2>
 
-      <table class="table table-bordered table-striped table-hover">
+      <table class="table table-bordered table-striped table-hover text-center align-middle">
         <thead class="thead-dark">
           <tr>
             <th>Serviço</th>
@@ -14,58 +14,48 @@
             <th>Hora</th>
             <th>Barbeiro</th>
             <th>Status</th>
-            <th class="text-center">Ações</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for appointment in appointments %}
           <tr>
-            <td>{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
-            <td>{{ appointment.date }}</td>
-            <td>{{ appointment.time }}</td>
-            <td>{{ appointment.barber.username }}</td>
-            <td>
-            {% if appointment.status == "cancelado" %}
-              <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
-            {% elif appointment.status == "concluido" %}
-              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Concluído</span>
-            {% elif appointment.status == "confirmado" %}
-              <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
-            {% else %}
-              <span class="badge badge-secondary">{{ appointment.status }}</span>
-            {% endif %}
-          </td>
-          {% if appointment.status == "pendente" %}
-            <td class="text-center">
-              <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-edit"></i> Reagendar
-              </a>
-              <a href="{% url 'appointments:cancelar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-danger ml-2">
-                <i class="fas fa-times-circle"></i> Cancelar
-              </a>
+            <td class="align-middle">{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
+            <td class="align-middle">{{ appointment.date }}</td>
+            <td class="align-middle">{{ appointment.time }}</td>
+            <td class="align-middle">{{ appointment.barber.username }}</td>
+            <td class="align-middle">
+              {% if appointment.status == "cancelado" %}
+                <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
+              {% elif appointment.status == "concluido" %}
+                <span class="badge badge-success"><i class="fas fa-check-circle"></i> Concluído</span>
+              {% elif appointment.status == "confirmado" %}
+                <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
+              {% else %}
+                <span class="badge badge-secondary">{{ appointment.status }}</span>
+              {% endif %}
             </td>
-            {% else %}
-              <td class="text-center">
-                <a href="#" 
-                  class="btn btn-sm btn-secondary disabled" 
-                  aria-disabled="true" 
-                  tabindex="-1" 
-                  style="pointer-events: none;">
+            <td class="align-middle">
+              {% if appointment.status == "pendente" %}
+              <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary px-2">
                   <i class="fas fa-edit"></i> Reagendar
                 </a>
-                <a href="#" 
-                  class="btn btn-sm btn-secondary disabled ml-2" 
-                  aria-disabled="true" 
-                  tabindex="-1" 
-                  style="pointer-events: none;">
+                <a href="{% url 'appointments:cancelar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-danger px-2">
                   <i class="fas fa-times-circle"></i> Cancelar
                 </a>
-              </td>
-            {% endif %}
+              </div>
+              {% else %}
+                <a href="{% url 'appointments:concluido' appointment.id %}" class="btn btn-sm btn-outline-success px-2">
+                  <i class="fas fa-check"></i> Concluido
+                </a>
+              </div>
+              {% endif %}
+            </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="text-center">Nenhum agendamento encontrado.</td>
+            <td colspan="6" class="text-center">Nenhum agendamento encontrado.</td>
           </tr>
           {% endfor %}
         </tbody>
