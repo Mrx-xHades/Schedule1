@@ -23,3 +23,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
+    
+class CarouselImage(models.Model):
+    image = models.ImageField(upload_to='carousel/')
+    caption = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.caption or f"Imagem {self.pk}"

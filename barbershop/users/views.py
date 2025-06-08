@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm  # Adicione esta importação
 from barbershop.users.models import User
+from .models import CarouselImage
 
 
 def register(request):
@@ -15,4 +16,10 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+
+def home(request):
+    carousel_images = CarouselImage.objects.all()
+    return render(request, 'landing.html', {'carousel_images': carousel_images})
 
