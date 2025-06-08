@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Imagem</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Salvar</button>
+  <a href="{% url 'carousel_list' %}" class="btn btn-secondary">Voltar</a>
+</form>
+{% endblock %}

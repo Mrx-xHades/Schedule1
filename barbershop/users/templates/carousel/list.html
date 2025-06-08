@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Imagens do Carrossel</h2>
+<a href="{% url 'carousel_add' %}" class="btn btn-primary mb-3">Adicionar Imagem</a>
+<div class="row">
+  {% for img in images %}
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <img src="{{ img.image.url }}" class="card-img-top">
+      <div class="card-body">
+        <p>{{ img.caption }}</p>
+        <a href="{% url 'carousel_edit' img.pk %}" class="btn btn-sm btn-warning">Editar</a>
+        <a href="{% url 'carousel_delete' img.pk %}" class="btn btn-sm btn-danger">Excluir</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

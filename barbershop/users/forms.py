@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
 from barbershop.users.models import User
+from .models import CarouselImage
 
 
 class UserRegisterForm(UserCreationForm):
@@ -67,3 +68,8 @@ class EmailLoginForm(AuthenticationForm):
         if commit:
             user.save()
         return user
+    
+class CarouselImageForm(forms.ModelForm):
+    class Meta:
+        model = CarouselImage
+        fields = ['image', 'caption']

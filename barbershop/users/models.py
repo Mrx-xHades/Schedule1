@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=False, blank=True)
@@ -26,7 +27,8 @@ class Profile(models.Model):
     
 class CarouselImage(models.Model):
     image = models.ImageField(upload_to='carousel/')
-    caption = models.CharField(max_length=100, blank=True)
+    caption = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.caption or f"Imagem {self.pk}"
+        return self.caption or f'Imagem {self.pk}'
