@@ -17,3 +17,5 @@ class ServiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['name'].label = "Nome do Serviço"
         self.fields['price'].label = "Preço (R$)"
+
+

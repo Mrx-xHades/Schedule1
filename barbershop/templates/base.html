@@ -64,8 +64,8 @@
                 {% if user.is_authenticated %} <!--Barber-->
                     {% if user.is_barber or user.is_staff %}  
                         <li class="nav-item">
-                            <a class="nav-link text-warning" href="{% url 'dashboard:criar_servico' %}">
-                                <i class="fas fa-scissors"></i> Criar Serviço
+                            <a class="nav-link text-warning" href="{% url 'dashboard:lista_servicos' %}">
+                                <i class="fas fa-scissors"></i> Serviços
                             </a>
                         </li>
 
