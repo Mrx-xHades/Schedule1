@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block title %}Cadastrar Serviço - InkZone{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8">
-    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.95);">
-      <h2 class="text-center mb-4" style="font-family: 'Bebas Neue', sans-serif;">
-        Novo Serviço
+    <div class="rounded shadow p-4" style="background: rgba(20, 20, 20, 0.95); border: 1px solid #333;">
+      <h2 class="text-center mb-4" style="font-family: 'UnifrakturCook', cursive; color: #ff0033;">
+        <i class="fas fa-pen-nib"></i> Novo Serviço
       </h2>
 
       <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
 
-        <div class="text-center mt-3">
-          <button type="submit" class="btn btn-success">
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-outline-success">
             <i class="fas fa-plus-circle"></i> Cadastrar Serviço
           </button>
-          <a href="{% url 'dashboard:service_form' %}" class="btn btn-secondary ml-2">
-            Cancelar
+          <a href="{% url 'dashboard:lista_servicos' %}" class="btn btn-outline-secondary ml-2">
+            <i class="fas fa-times"></i> Cancelar
           </a>
         </div>
       </form>

@@ -1,144 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Agenda{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Studio InkZone{% endblock %}</title>
 
-    <!-- Fontes e Estilos -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Fontes e Estilos -->
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:700&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        :root {
-            --page-bg: linear-gradient(to right, #f3ebe2, #fffaf3, #f3ebe2);
-            --page-bg-dark: linear-gradient(to right, #111111, #1a1a1a, #111111);
-            --text-light: #f1f1f1;
-        }
+    :root {
+        --page-bg-dark: linear-gradient(to right, #111111, #1a1a1a, #111111);
+        --text-light: #f1f1f1;
+        --accent-red: #ff0033;
+    }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', sans-serif;
+        background: var(--page-bg-dark);
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+    }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            background: var(--page-bg);
-        }
+    .main-content {
+        flex: 1;
+    }
 
-        body.dark-mode {
-            background: var(--page-bg-dark);
-            color: var(--text-light);
-        }
+    .navbar {
+        background: linear-gradient(to right, #2a0e0e, #1a1a1a);
+    }
 
-        .main-content {
-            flex: 1;
-        }
+    .navbar-brand {
+        font-family: 'UnifrakturCook', cursive;
+        font-size: 2.2rem;
+        color: var(--accent-red) !important;
+    }
 
-        .navbar {
-            background: linear-gradient(to right, #3b2d2f, #1f1f1f);
-        }
+    .navbar-nav .nav-link {
+        color: #f5f5f5 !important;
+    }
 
-        .navbar-brand {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 1px;
-            color: #f5f5f5 !important;
-        }
+    .navbar-nav .nav-link:hover {
+        color: var(--accent-red) !important;
+    }
 
-        .footer {
-            background: #1f1f1f;
-        }
-    </style>
+    .footer {
+        background: #111;
+        border-top: 1px solid #222;
+        text-align: center;
+        padding: 16px 0;
+        margin-top: auto;
+    }
 
-    {% block extra_css %}{% endblock %}
+    .footer p {
+        margin: 0;
+        color: #ff0033;
+        font-size: 0.95rem;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 1px;
+    }
+
+    button.btn-outline-light:hover {
+        background-color: var(--accent-red);
+        border-color: var(--accent-red);
+    }
+</style>
+
+
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="/">Barbearia</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %} <!--Barber-->
-                    {% if user.is_barber or user.is_staff %}  
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" href="{% url 'dashboard:lista_servicos' %}">
-                                <i class="fas fa-scissors"></i> Serviços
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" href="{% url 'users:carousel_list' %}">
-                                <i class="fas fa-camera-retro"></i> Adicionar imagem
-                            </a>
-                        </li>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="/">InkZone</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        {% if user.is_authenticated %}
+          {% if user.is_barber or user.is_staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard:lista_servicos' %}">
+                <i class="fas fa-pen-nib"></i> Tatuagens
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:carousel_list' %}">
+                <i class="fas fa-images"></i> Portfólio
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'appointments:list_all' %}">
+                <i class="fas fa-calendar-check"></i> Agenda
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard:reset' %}">
+                <i class="fas fa-key"></i> Redefinir Senha
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'appointments:list' %}">
+                <i class="fas fa-calendar-check"></i> Meus Agendamentos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'appointments:schedule' %}">
+                <i class="fas fa-calendar-plus"></i> Agendar
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'appointments:historico' %}">
+                <i class="fas fa-history"></i> Histórico
+              </a>
+            </li>
+          {% endif %}
+        {% endif %}
+      </ul>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'appointments:list_all' %}">
-                                <i class="fas fa-calendar-check"></i> Agenda
-                            </a>
-                        </li>
-                 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dashboard:reset' %}">
-                                <i class="fas fa-key"></i> Resete Senha
-                            </a>
-                        </li>
-                    {% else %}   <!--Client-->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'appointments:list' %}">
-                                <i class="fas fa-calendar-check"></i> Meus Agendamentos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'appointments:schedule' %}">
-                                <i class="fas fa-calendar-plus"></i> Agendar
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'appointments:historico' %}">
-                                <i class="fas fa-history"></i> Histórico
-                            </a>
-                         </li>
-                    {% endif %}
-                {% endif %}
-            </ul>
-            {% if user.is_authenticated %}
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    {% if user.is_barber or user.is_staff %}
-                        <span class="navbar-text text-white mr-3">Bem-vindo, {{ user.username }}</span>
-                    {% else %}
-                        <span class="navbar-text text-white mr-3">Bem-vindo, {{ user.first_name }}</span>
-                    {% endif %}
-                </li>
-                <li class="nav-item">
-                    <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-light">Sair</button>
-                    </form>
-                </li>
-            </ul>
-            {% endif %}
-        </div>
-    </nav>
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <span class="navbar-text text-light mr-3">
+            Bem-vindo, {{ user.first_name|default:user.username }}
+          </span>
+        </li>
+        <li class="nav-item">
+          <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light">Sair</button>
+          </form>
+        </li>
+      </ul>
+      {% endif %}
+    </div>
+  </nav>
 
-    <!-- Conteúdo Principal -->
-    <main class="container mt-4 main-content">
-        {% block content %}{% endblock %}
-    </main>
+  <!-- Conteúdo Principal -->
+  <main class="container mt-4 main-content">
+    {% block content %}{% endblock %}
+  </main>
 
-    <!-- Rodapé -->
-    <footer class="footer text-white text-center py-3">
-        <p class="mb-0">© 2025 Barbearia - Todos os direitos reservados</p>
+  <!-- Rodapé -->
+  <footer class="footer text-center py-4">
+    <p class="mb-0" style="
+        color: #ff0033;
+        font-size: 0.95rem;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 1px;
+        border-top: 1px solid #222;
+        padding-top: 10px;
+        margin-top: 30px;
+        ">
+        © 2025 <strong>InkZone Studio</strong> – Arte na pele com atitude
+    </p>
     </footer>
 
-    <!-- Bootstrap JS + dependencies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    {% block extra_js %}{% endblock %}
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

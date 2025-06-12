@@ -1,32 +1,161 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+<style>
+  .received-box {
+    background-color: rgba(20, 20, 20, 0.95);
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 0 15px rgba(255, 0, 51, 0.3);
+    color: #f2f2f2;
+  }
+
+  .received-title {
+    font-family: 'UnifrakturCook', cursive;
+    color: #ff0033;
+    text-shadow: 1px 1px 5px black;
+    font-size: 2.2rem;
+  }
+
+  .table-received {
+    background-color: #1e1e1e;
+    color: #f2f2f2;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .table-received thead th {
+    background-color: #111;
+    color: #ff0033;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 12px;
+    border-bottom: 2px solid #333;
+  }
+
+  .table-received tbody td {
+    vertical-align: middle;
+    border-top: 1px solid #444;
+    padding: 10px;
+  }
+
+  /* CORRIGIDO: melhora visibilidade ao passar o mouse */
+  .table-received tbody tr:hover {
+    background-color: rgba(255, 0, 51, 0.12) !important;
+    color: #ffffff;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  /* Corrige ícones/textos dentro da célula ao hover */
+  .table-received tbody tr:hover td,
+  .table-received tbody tr:hover a,
+  .table-received tbody tr:hover span,
+  .table-received tbody tr:hover i {
+    color: #ffffff !important;
+  }
+
+  /* Corrige zebra-stripe (linhas pares escuras demais) */
+  .table-received tbody tr:nth-child(even) {
+    background-color: #1e1e1e !important;
+  }
+
+  .badge-danger {
+    background-color: #ff0033 !important;
+    font-size: 0.85rem;
+  }
+
+  .badge-success {
+    background-color: #00c853 !important;
+    font-size: 0.85rem;
+  }
+
+  .badge-secondary {
+    background-color: #777 !important;
+    font-size: 0.85rem;
+  }
+
+  .btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+  }
+
+  .btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+  }
+
+  .btn-outline-danger {
+    border-color: #ff0033;
+    color: #ff0033;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #ff0033;
+    color: #fff;
+  }
+
+  .btn-outline-primary {
+    border-color: #00bfff;
+    color: #00bfff;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #00bfff;
+    color: #000;
+  }
+
+  .action-buttons a {
+    margin: 3px;
+    min-width: 95px;
+  }
+
+  @media (max-width: 768px) {
+    .received-box {
+      padding: 25px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .received-title {
+      font-size: 1.6rem;
+    }
+  }
+</style>
+
+{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-10">
-    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.9);">
-      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Agendamentos Recebidos</h2>
+    <div class="received-box">
+      <h2 class="text-center mb-4 received-title">
+        <i class="fas fa-calendar-alt"></i> Agendamentos Recebidos
+      </h2>
 
-      <table class="table table-bordered table-hover text-center align-middle">
-        <thead class="thead-dark">
+      <table class="table table-received table-hover text-center">
+        <thead>
           <tr>
-            <th class="align-middle">Cliente</th>
-            <th class="align-middle">Serviço</th>
-            <th class="align-middle">Data</th>
-            <th class="align-middle">Hora</th>
-            <th class="align-middle">Barbeiro</th>
-            <th class="align-middle">Status</th>
-            <th class="align-middle">Ações</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Tatuador</th>
+            <th>Status</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for appointment in appointments %}
           <tr>
-            <td class="align-middle">{{ appointment.client.first_name|default:appointment.client.email }}</td>
-            <td class="align-middle">{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
-            <td class="align-middle">{{ appointment.date|date:"j \\d\\e F \\d\\e Y" }}</td>
-            <td class="align-middle">{{ appointment.time|time:"H:i" }}</td>
-            <td class="align-middle">{{ appointment.barber.username }}</td>
-            <td class="align-middle">
+            <td>{{ appointment.client.first_name|default:appointment.client.email }}</td>
+            <td>{{ appointment.service.name }} - R$ {{ appointment.service.price }}</td>
+            <td>{{ appointment.date|date:"j \\d\\e F \\d\\e Y" }}</td>
+            <td>{{ appointment.time|time:"H:i" }}</td>
+            <td>{{ appointment.barber.username }}</td>
+            <td>
               {% if appointment.status == "cancelado" %}
                 <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
               {% elif appointment.status == "concluido" %}
@@ -37,16 +166,16 @@
                 <span class="badge badge-secondary"><i class="fas fa-clock"></i> {{ appointment.status }}</span>
               {% endif %}
             </td>
-            <td class="align-middle">
+            <td>
               {% if appointment.status == "pendente" %}
-              <div class="d-flex justify-content-center gap-2">
-                <a href="{% url 'appointments:confirmar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-success px-2">
+              <div class="d-flex justify-content-center flex-wrap action-buttons">
+                <a href="{% url 'appointments:confirmar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-success">
                   <i class="fas fa-check"></i> Confirmar
                 </a>
-                <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary px-2">
+                <a href="{% url 'appointments:editar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-primary">
                   <i class="fas fa-edit"></i> Reagendar
                 </a>
-                <a href="{% url 'appointments:cancelar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-danger px-2">
+                <a href="{% url 'appointments:cancelar_agendamento' appointment.id %}" class="btn btn-sm btn-outline-danger">
                   <i class="fas fa-times"></i> Cancelar
                 </a>
               </div>
@@ -57,7 +186,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6" class="text-center">Nenhum agendamento encontrado.</td>
+            <td colspan="7" class="text-center text-muted">Nenhum agendamento encontrado.</td>
           </tr>
           {% endfor %}
         </tbody>

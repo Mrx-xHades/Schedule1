@@ -1,33 +1,36 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+  {% if form.instance.pk %}Editar Serviço{% else %}Novo Serviço{% endif %} - InkZone
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8">
-      <div class="card shadow-sm">
-        <div class="card-header text-center bg-dark text-white" style="font-family: 'Bebas Neue', sans-serif;">
+      <div class="shadow rounded" style="background: rgba(20, 20, 20, 0.95); border: 1px solid #333;">
+        <div class="text-center py-3" style="font-family: 'UnifrakturCook', cursive; color: #ff0033; border-bottom: 1px solid #444;">
           <h3 class="mb-0">
             {% if form.instance.pk %}
-              Editar Serviço
+              <i class="fas fa-edit"></i> Editar Serviço
             {% else %}
-              Novo Serviço
+              <i class="fas fa-plus-circle"></i> Novo Serviço
             {% endif %}
           </h3>
         </div>
 
-        <div class="card-body bg-light">
+        <div class="p-4">
           <form method="post" novalidate>
             {% csrf_token %}
             {{ form|crispy }}
 
             <div class="d-flex justify-content-between mt-4">
-              <a href="{% url 'dashboard:lista_servicos' %}" class="btn btn-secondary">
+              <a href="{% url 'dashboard:lista_servicos' %}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Voltar
               </a>
-              <button type="submit"  class="btn btn-success">
+              <button type="submit" class="btn btn-outline-success">
                 <i class="fas fa-save"></i>
-                <a href="{% url 'dashboard:lista_servicos' %}"> </a>
                 {% if form.instance.pk %}Salvar{% else %}Cadastrar{% endif %}
               </button>
             </div>

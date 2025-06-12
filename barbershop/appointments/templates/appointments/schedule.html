@@ -4,16 +4,18 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8">
-    <div class="bg-white dark-mode bg-dark rounded shadow p-4" style="background: rgba(255,255,255,0.9);">
-      <h2 class="mb-4 text-center" style="font-family: 'Bebas Neue', sans-serif;">Agendar Horário</h2>
+    <div class="rounded shadow p-5" style="background-color: #1e1e1e; color: #f2f2f2; border: 1px solid #333;">
+      <h2 class="mb-4 text-center" style="font-family: 'UnifrakturCook', cursive; font-size: 2.5rem; color: #ff0033; text-shadow: 2px 2px 5px #000;">
+        Agendar Sessão
+      </h2>
 
       <form method="post" id="appointment-form">
         {% csrf_token %}
         {{ form|crispy }}
 
-        <div class="text-center mt-3">
-          <button type="submit" class="btn btn-success">
-            <i class="fas fa-calendar-check"></i> Agendar
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-outline-danger btn-lg px-4 py-2" style="border-radius: 30px;">
+            <i class="fas fa-calendar-check"></i> Confirmar Agendamento
           </button>
         </div>
       </form>
@@ -24,14 +26,11 @@
 
 {% block extra_js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
   $(document).ready(function () {
     $("#id_date, #id_barber").on("change", function () {
       let date = $("#id_date").val();
       let barber_id = $("#id_barber").val();
-
-      console.log("Tentando buscar horários para:", date, barber_id);
 
       if (date && barber_id) {
         $.ajax({

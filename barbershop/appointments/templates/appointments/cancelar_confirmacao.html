@@ -1,20 +1,44 @@
 {% extends 'base.html' %}
 
+{% block title %}Cancelar Agendamento - InkZone{% endblock %}
+
 {% block content %}
-<h2 class="mb-4 text-danger">Cancelar Agendamento</h2>
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10">
+    <div class="shadow p-4 rounded" style="background: rgba(20, 20, 20, 0.95); border: 1px solid #333;">
+      <h2 class="text-center mb-4" style="font-family: 'UnifrakturCook', cursive; color: #ff0033;">
+        <i class="fas fa-ban"></i> Cancelar Agendamento
+      </h2>
 
-<p>Tem certeza que deseja cancelar este agendamento?</p>
+      <p class="text-center mb-4">Tem certeza que deseja cancelar este agendamento?</p>
 
-<ul class="list-group mb-3">
-  <li class="list-group-item"><strong>Serviço:</strong> {{ agendamento.service.name }} - R$ {{ agendamento.service.price }}</li>
-  <li class="list-group-item"><strong>Data:</strong> {{ agendamento.date }}</li>
-  <li class="list-group-item"><strong>Hora:</strong> {{ agendamento.time }}</li>
-  <li class="list-group-item"><strong>Barbeiro:</strong> {{ agendamento.barber.username }}</li>
-</ul>
+      <ul class="list-group mb-4">
+        <li class="list-group-item bg-dark text-light border-secondary">
+          <strong>Serviço:</strong> {{ agendamento.service.name }} – R$ {{ agendamento.service.price }}
+        </li>
+        <li class="list-group-item bg-dark text-light border-secondary">
+          <strong>Data:</strong> {{ agendamento.date }}
+        </li>
+        <li class="list-group-item bg-dark text-light border-secondary">
+          <strong>Hora:</strong> {{ agendamento.time }}
+        </li>
+        <li class="list-group-item bg-dark text-light border-secondary">
+          <strong>Barbeiro:</strong> {{ agendamento.barber.username }}
+        </li>
+      </ul>
 
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
-  <a href="{% url 'appointments:list' %}" class="btn btn-secondary">Voltar</a>
-</form>
+      <div class="text-center">
+        <form method="post" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-danger mr-2">
+            <i class="fas fa-trash-alt"></i> Confirmar Cancelamento
+          </button>
+        </form>
+        <a href="{% url 'appointments:list' %}" class="btn btn-outline-light">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
